@@ -8,37 +8,20 @@
 
 void read_csv_file();
 
-int main()
+void read_csv_file(char* filename)
 {
-  read_csv_file("myfile.csv");
+  /* read_csv_file("myfile.csv"); */
+  const char* tok;
+  FILE* stream = fopen("myfile.csv", "r");
+  char line[1024];
+  while (fgets(line, 1024, stream))
+    {
+      for (tok = strtok(line, ";"); tok && *tok; tok = strtok(NULL, ";\n")) {
+        printf("%s", tok);
+      }
+    }
 }
 
-
-void read_csv_file(char *filename)
-{
-  int rowIndex = 0;
-  double rows[MAXROWS][MAXCOLS] = {{0,0}};
-  char line[128];
-  char* token = NULL;
-  FILE* fp = fopen(filename,"r");
-  if (fp != NULL)
-    {
-      while (fgets( line, sizeof(line), fp) != NULL && rowIndex < MAXROWS)
-        {
-          int colIndex = 0;
-          for (token = strtok( line, ";"); token != NULL && colIndex < MAXCOLS; token = strtok(NULL, ";"))
-            {
-              rows[rowIndex][colIndex++] = atof(token);
-            }
-          rowIndex++;
-        }
-      fclose(fp);
-    }
-
-  for (int i = 0; i < rowIndex; ++i)
-  {
-      for (int j = 0; j < MAXCOLS; ++j)
-        printf("%10.4lf", rows[i][j]);
-      putchar('\n');
-  }
+int main(){
+  read_csv_file("myfile.csv");
 }
