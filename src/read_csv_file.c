@@ -6,14 +6,21 @@
 #define MAXROWS 10
 #define MAXCOLS 5
 
+void read_csv_file();
 
 int main()
+{
+  read_csv_file("myfile.csv");
+}
+
+
+void read_csv_file(char *filename)
 {
   int rowIndex = 0;
   double rows[MAXROWS][MAXCOLS] = {{0,0}};
   char line[128];
   char* token = NULL;
-  FILE* fp = fopen("myfile.csv","r");
+  FILE* fp = fopen(filename,"r");
   if (fp != NULL)
     {
       while (fgets( line, sizeof(line), fp) != NULL && rowIndex < MAXROWS)
@@ -29,11 +36,9 @@ int main()
     }
 
   for (int i = 0; i < rowIndex; ++i)
-    {
+  {
       for (int j = 0; j < MAXCOLS; ++j)
         printf("%10.4lf", rows[i][j]);
       putchar('\n');
-    }
-
-  return 0;
+  }
 }
